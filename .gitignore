@@ -1,1 +1,4 @@
-pytf-env
+pytf-env/
+pytf/dist/
+__pycache__/
+run.sh
