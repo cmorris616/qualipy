@@ -4,5 +4,5 @@ from config import AppConfig
 
 class TestPlugin(abc.ABC):
     @abc.abstractmethod
-    def execute(config: AppConfig):
+    def execute(self, config: AppConfig):
         raise NotImplementedError()

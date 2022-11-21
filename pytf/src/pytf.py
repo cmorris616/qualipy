@@ -1,5 +1,6 @@
 import argparse
-from config import load_config, get_config
+
+from config import get_config, load_config
 from test_plugins.behave_plugin import BehavePlugin
 
 parser = argparse.ArgumentParser(
@@ -22,8 +23,10 @@ test_plugin_classes = {
     'behave': BehavePlugin
 }
 
-test_class = test_plugin_classes[config.test_class.lower()]()
-# test_class.execute(config)
+# test_class = test_plugin_classes[config.test_class.lower()]()
+test_class = BehavePlugin()
+test_class.execute(config)
+
 # Upload results
 
 if __name__ == '__main__':

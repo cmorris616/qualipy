@@ -14,3 +14,15 @@ def step_impl(context, number):  # -- NOTE: number is converted into integer
 def step_impl(context):
     assert context.failed is False
     assert context.tests_count >= 0
+
+@given('I was pulled from JIRA')
+def step_pulled_from_jira(context):
+    assert context.failed is False
+
+@when('the JIRA test is executed')
+def jira_test_step_executed(context):
+    assert context.failed is False
+
+@then('the JIRA plugin test pull will be successful')
+def jira_test_pull_succeeded(context):
+    assert context.failed is False

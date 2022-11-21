@@ -1,4 +1,5 @@
 pytf-env/
 pytf/dist/
 __pycache__/
+PyTF.egg-info/
 run.sh
