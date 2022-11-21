@@ -1,6 +1,5 @@
 import yaml
 import os
-import logging
 
 from .app_config import AppConfig
 
@@ -10,16 +9,19 @@ _runtime_config: AppConfig = None
 def get_config():
     return _runtime_config
 
-def load_config(config_file, cl_args={}):
-    if os.path.exists(config_file):
-        logging.info(
-            f"'{config_file}' not found.  Using default configuration.")
+def load_config(config_file_name, cl_args={}):
+    if not os.path.exists(config_file_name):
+        print(
+            f"\n*** '{config_file_name}' not found.  Using default configuration. ***\n")
         yaml_config = {}
     else:
-        yaml_config = yaml.safe_load(config_file)
+        with open(config_file_name, 'r') as config_file:
+            yaml_config = yaml.safe_load(config_file)
+            if yaml_config is None:
+                yaml_config = {}
 
     if cl_args.features_dir is not None:
-        features_directory = cl_args.features_directory
+        features_directory = cl_args.features_dir
     elif 'features_directory' in yaml_config:
         features_directory = yaml_config['features_directory']
     else:
@@ -28,5 +30,8 @@ def load_config(config_file, cl_args={}):
     global _runtime_config
     _runtime_config = AppConfig(
         features_directory=features_directory,
+        log_file=yaml_config.get('log_file', None),
+        logging_level=yaml_config.get('logging_level', 'info'),
+        proj_mgmt_class=yaml_config.get('project_management', 'jira'),
         test_class=yaml_config.get('test_class', 'Behave')
     )
