@@ -28,10 +28,6 @@ def load_config(config_file_name, cl_args={}):
         features_directory = 'features'
 
     global _runtime_config
-    _runtime_config = AppConfig(
-        features_directory=features_directory,
-        log_file=yaml_config.get('log_file', None),
-        logging_level=yaml_config.get('logging_level', 'info'),
-        proj_mgmt_class=yaml_config.get('project_management', 'jira'),
-        test_class=yaml_config.get('test_class', 'Behave')
+    _runtime_config = AppConfig(yaml_config,
+        features_directory=features_directory
     )

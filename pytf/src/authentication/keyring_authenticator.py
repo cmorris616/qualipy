@@ -1,15 +1,19 @@
 from .authenticator import Authenticator
+import keyring
 
 class KeyringAuthenticator(Authenticator):
+
+    def __init__(self, **kwargs):
+        self._system = kwargs['system']
     
     def get_username(self):
-        raise NotImplementedError()
+        return keyring.get_password(self._system, 'username')
     
     def get_password(self):
-        raise NotImplementedError()
+        return keyring.get_password(self._system, 'password')
 
     def get_api_key(self):
-        raise NotImplementedError()
+        return keyring.get_password(self._system, 'api_key')
     
     def get_certificate(self):
-        raise NotImplementedError()
+        return keyring.get_password(self._system, 'certificate')

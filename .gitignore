@@ -3,3 +3,4 @@ pytf/dist/
 __pycache__/
 PyTF.egg-info/
 run.sh
+pytf_output/

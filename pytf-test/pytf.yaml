@@ -1,0 +1,4 @@
+jira.regression.test.query: 'type=Test'
+jira.url: 'http://localhost:8080'
+use.local.feature.files: false
+download.feature.files: true

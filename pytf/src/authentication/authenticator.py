@@ -2,8 +2,8 @@ import abc
 
 
 class Authenticator:
-    def __init__(self, config):
-        self._config = config
+    def __init__(self, **kwargs):
+        pass
     
     @abc.abstractmethod
     def get_username(self):
