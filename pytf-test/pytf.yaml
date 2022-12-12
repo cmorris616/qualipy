@@ -1,4 +1,10 @@
 jira.regression.test.query: 'type=Test'
+jira.progression.test.query: 'type=Story and status=Test'
+jira.test.execution.query: 'type="Test Execution" and status=Development'
 jira.url: 'http://localhost:8080'
 use.local.feature.files: false
 download.feature.files: true
+testing.type: 'progression'
+use.access.token: false
+upload.test.results: true
+logging.level: 'info'

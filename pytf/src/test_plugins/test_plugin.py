@@ -10,3 +10,7 @@ class TestPlugin(abc.ABC):
     @abc.abstractmethod
     def execute(self):
         raise NotImplementedError()
+    
+    @abc.abstractproperty
+    def test_results_file(self):
+        raise NotImplementedError()

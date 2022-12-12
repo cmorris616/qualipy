@@ -23,11 +23,14 @@ def load_config(config_file_name, cl_args={}):
     if cl_args.features_dir is not None:
         features_directory = cl_args.features_dir
     elif 'features_directory' in yaml_config:
-        features_directory = yaml_config['features_directory']
+        features_directory = yaml_config['features.directory']
     else:
         features_directory = 'features'
 
+    output_directory = cl_args.output_dir
+
     global _runtime_config
     _runtime_config = AppConfig(yaml_config,
-        features_directory=features_directory
+        features_directory=features_directory,
+        output_directory=output_directory
     )

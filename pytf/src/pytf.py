@@ -17,6 +17,7 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument('--config-file', default='pytf.yaml')
 parser.add_argument('--features-dir')
+parser.add_argument('--output-dir', default=OUTPUT_DIRECTORY)
 
 args = parser.parse_args()
 
@@ -95,6 +96,8 @@ test_plugin = test_plugin_classes[config.test_class.lower()](config)
 test_plugin.execute()
 
 # Upload results
+if config._upload_test_results:
+    proj_mgmt_plugin.upload_test_results(test_plugin.test_results_file)
 
 if __name__ == '__main__':
     pass

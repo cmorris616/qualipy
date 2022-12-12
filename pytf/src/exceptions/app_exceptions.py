@@ -12,3 +12,12 @@ class MissingUrlError(Exception):
     
     def __str__(self):
         return 'Missing URL'
+
+class HttpException(Exception):
+    def __init__(self, msg, response, *args):
+        message = \
+            f'''{msg}\n
+            Response Code:    {response.status_code}
+            Response Reason:  {response.reason}
+            Response Content: {response.content}'''
+        super().__init__((message,) + args)

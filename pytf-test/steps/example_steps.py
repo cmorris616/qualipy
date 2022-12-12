@@ -26,3 +26,12 @@ def jira_test_step_executed(context):
 @then('the JIRA plugin test pull will be successful')
 def jira_test_pull_succeeded(context):
     assert context.failed is False
+
+@given(u'the first precondition is met')
+def jira_first_precondition(context):
+    assert context.failed is False
+
+
+@then(u'the JIRA plugin test pull will be succeessful')
+def jira_test_pull_success(context):
+    assert context.failed is False
