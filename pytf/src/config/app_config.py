@@ -10,7 +10,7 @@ class AppConfig:
         self._test_class = config_dict.get('test.class', 'Behave')
         self._use_local_feature_files = config_dict.get('use.local.feature.files', True)
         self.runtime_features_directory = self._features_directory
-        self._upload_test_results = config_dict.get('upload.test.results', True)
+        self._upload_test_results = config_dict.get('upload.test.results', False)
 
         self._config_dict = config_dict
 

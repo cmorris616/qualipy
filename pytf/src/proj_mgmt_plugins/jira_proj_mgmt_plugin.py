@@ -37,13 +37,13 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
         self._regression_test_query = self._config.get(
             'jira.regression.test.query', 'type=Test')
         self._progression_test_query = self._config.get(
-            'jira.progression.test.query', 'type=Test and status=Test')
+            'jira.progression.test.query', 'type=Story and status=Test')
         self._jira_url = self._config.get('jira.url', '')
         self._max_results = self._config.get('jira.max.results', 1000)
         self._features_directory = kwargs.get('features_directory', 'features')
         self._project_key = self._config.get('jira.project.key', '')
         self._test_execution_info = self._config.get(
-            'test.execution.info', None)
+            'jira.test.execution.info', None)
         self._jira_project = None
 
         if self._jira_url.strip() == '':
@@ -63,12 +63,13 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
 
     def _export_progression_tests(self):
         logging.info('Exporting progression tests from JIRA')
+        logging.info('Querying for user stories')
         stories = self._query_issues(self._progression_test_query)
+
+        issue_keys = []
 
         for story in stories:
             linked_issues = story[FIELDS_KEY][ISSUE_LINKS_FIELD]
-
-            issue_keys = []
 
             for linked_issue in linked_issues:
                 if TYPE_KEY not in linked_issue.keys():
@@ -82,6 +83,10 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
 
                 issue_keys.append(
                     linked_issue[INWARD_ISSUE_KEY][ISSUE_KEY_FIELD])
+                
+        if len(issue_keys) == 0:
+            logging.info('No tests found in JIRA')
+            return
 
         # Send request for feature files
         issue_list = ';'.join(issue_keys)
