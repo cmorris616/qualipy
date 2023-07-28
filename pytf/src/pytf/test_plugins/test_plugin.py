@@ -1,5 +1,5 @@
 import abc
-from config import AppConfig
+from pytf.config import AppConfig
 
 
 class TestPlugin(abc.ABC):

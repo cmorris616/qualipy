@@ -21,5 +21,5 @@ classifiers = [
 "Homepage" = "https://github.com/cmorris616/pytf"
 "Bug Tracker" = "https://github.com/cmorris616/pytf/issues"
 
-[tool.setuptools.packages.find]
-exclude = ["docs*", "tests*"]
+# [tool.setuptools.packages.find]
+# exclude = ["docs*", "tests*"]

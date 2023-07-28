@@ -5,7 +5,7 @@ import tempfile
 from zipfile import ZipFile
 import requests
 import base64
-from exceptions.app_exceptions import HttpException, InvalidTestingTypeError, MissingUrlError
+from pytf.exceptions.app_exceptions import HttpException, InvalidTestingTypeError, MissingUrlError
 from .proj_mgmt_plugin import TESTING_TYPE_PROGRESSION, TESTING_TYPE_REGRESSION, ProjMgmtPlugin
 
 # JSON keys/field names

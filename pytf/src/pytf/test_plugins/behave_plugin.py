@@ -1,6 +1,6 @@
 import os
 from .test_plugin import TestPlugin
-from config.app_config import AppConfig
+from pytf.config.app_config import AppConfig
 
 
 class BehavePlugin(TestPlugin):
