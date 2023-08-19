@@ -1,11 +1,16 @@
 from unittest.mock import Mock, patch
 
 import pytest
+import os
 
-@pytest.fixture()
-def mock_keyring(monkeypatch):
-    def get_username_mock():
-        return 'mock username'
+@pytest.fixture(autouse=True, scope='session')
+def unittest_config():
+    config_file_name = 'unittest_load_config.yaml'
+
+    with open(config_file_name, 'w') as config_file:
+        yield
     
-    with patch('keyring') as keyring_mock:
-        yield keyring_mock
+    os.remove(config_file_name)
+
+    import shutil
+    shutil.rmtree('features')

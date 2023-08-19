@@ -110,6 +110,10 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
         logging.info('Exporting regression tests from JIRA')
         issues = self._query_issues(self._regression_test_query)
 
+        if issues is None or len(issues) == 0:
+            logging.info('No regression tests found')
+            return
+
         # Send request for feature files
         issue_list = ';'.join([x[ISSUE_KEY_FIELD] for x in issues])
         response = requests.get(
@@ -133,7 +137,8 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
             return self._jira_project
 
         if self._project_key == '':
-            return {}
+            logging.warning('No JIRA project key set.  Unable to retrieve project info.')
+            return None
 
         response = requests.get(url=f'{self._jira_url}{PROJECT_SEARCH_PATH}/{self._project_key}',
                                 headers=self._get_request_headers())
@@ -157,7 +162,7 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
             logging.debug('Using access token to connect to JIRA')
             auth_header_value = f'Bearer {self._authenticator.get_api_key()}'
         else:
-            logging.debug('Using username and password to connecto to JIRA')
+            logging.debug('Using username and password to connect to to JIRA')
             auth_header_value = 'Basic ' + base64.b64encode(
                 f'{self._authenticator.get_username()}:{self._authenticator.get_password()}'
                 .encode('utf-8')).decode('utf-8')
@@ -206,6 +211,11 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
         return issues
 
     def upload_test_results(self, test_results_file):
+
+        if self._get_jira_project() is None:
+            logging.error('JIRA project info not available.  Unable to upload results.')
+            return
+
         logging.info('Uploading test results')
         headers = self._get_request_headers()
         del headers['Content-Type']
@@ -218,7 +228,7 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
                 }
             }
 
-        proj_info_filename = os.path.join(self._config['output_directory'], 'proj_info.json')
+        proj_info_filename = os.path.join(self._config['output.directory'], 'proj_info.json')
         
         with open(proj_info_filename, 'w') as proj_info_file:
             proj_info_file.write(json.dumps(self._test_execution_info))

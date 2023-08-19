@@ -1,6 +1,10 @@
 # -- FILE: features/steps/example_steps.py
 from behave import given, when, then, step
 
+@given('test has been setup')
+def setup_test(context):
+    pass
+
 @given('we have behave installed')
 def step_impl(context):
     pass
@@ -30,7 +34,6 @@ def jira_test_pull_succeeded(context):
 @given(u'the first precondition is met')
 def jira_first_precondition(context):
     assert context.failed is False
-
 
 @then(u'the JIRA plugin test pull will be succeessful')
 def jira_test_pull_success(context):

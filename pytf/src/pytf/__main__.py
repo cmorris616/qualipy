@@ -3,10 +3,10 @@ import logging
 import os
 import shutil
 
-from .config import get_config, load_config
-from .proj_mgmt_plugins.jira_proj_mgmt_plugin import JiraProjMgmtPlugin
-from .authentication.keyring_authenticator import KeyringAuthenticator
-from .test_plugins.behave_plugin import BehavePlugin
+from pytf.config import get_config, load_config
+from pytf.proj_mgmt_plugins.jira_proj_mgmt_plugin import JiraProjMgmtPlugin
+from pytf.authentication.keyring_authenticator import KeyringAuthenticator
+from pytf.test_plugins.behave_plugin import BehavePlugin
 
 OUTPUT_DIRECTORY = 'pytf_output'
 

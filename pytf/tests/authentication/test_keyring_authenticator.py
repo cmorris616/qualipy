@@ -1,9 +1,10 @@
 from unittest.mock import patch
+from unittest import TestCase
 
 from pytf.authentication.keyring_authenticator import KeyringAuthenticator
 
 
-class TestKeyringAuthenticator:
+class TestKeyringAuthenticator(TestCase):
 
     @patch('pytf.authentication.keyring_authenticator.keyring')
     def test_get_username(self, keyring_mock):

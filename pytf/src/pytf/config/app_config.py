@@ -1,9 +1,9 @@
 class AppConfig:
     def __init__(self, config_dict, **kwargs):
-        self._features_directory = config_dict['features_directory'] = kwargs['features_directory']
-        self.output_directory = config_dict['output_directory'] = kwargs['output_directory']
+        self._features_directory = config_dict['features.directory'] = kwargs['features_directory']
+        self.output_directory = config_dict['output.directory'] = kwargs['output_directory']
         self._download_feature_files = config_dict.get('download.feature.files', False)
-        self._log_file = config_dict.get('log_file', None)
+        self._log_file = config_dict.get('log.file', None)
         self._logging_level = config_dict.get('logging.level', 'info')
         self._proj_mgmt_authenticator = config_dict.get('project.management.authenticator', 'keyring')
         self._proj_mgmt_class = config_dict.get('project.management', 'jira')
@@ -12,7 +12,7 @@ class AppConfig:
         self.runtime_features_directory = self._features_directory
         self._upload_test_results = config_dict.get('upload.test.results', False)
 
-        self._config_dict = config_dict
+        self._config_dict = config_dict.copy()
 
     @property
     def config_dict(self):
