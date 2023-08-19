@@ -1,6 +1,6 @@
 # Settings
 
-Settings will be read from pytf.yaml by default, but can be overridden by using the `--config-file` argument on the command line.
+Settings will be read from qualipy.yaml by default, but can be overridden by using the `--config-file` argument on the command line.
 
 ## General
 

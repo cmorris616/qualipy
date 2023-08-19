@@ -1,9 +1,9 @@
 .vscode/
 notes
-pytf-env/
-pytf/dist/
+qualipy-env/
+qualipy/dist/
 __pycache__/
-PyTF.egg-info/
+qualipy.egg-info/
 run.sh
-pytf_output/
+qualipy_output/
 .coverage

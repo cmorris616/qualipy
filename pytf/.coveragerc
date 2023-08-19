@@ -1,4 +1,0 @@
-[run]
-command_line=-m pytest
-omit=tests/*
-source=src/pytf
