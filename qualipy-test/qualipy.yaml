@@ -2,8 +2,8 @@ jira.regression.test.query: 'type=Test'
 jira.progression.test.query: 'type=Story and status="In Progress"'
 jira.url: 'http://localhost:8080'
 jira.project.key: 'TP'
-use.local.feature.files: false
-download.feature.files: true
+use.local.feature.files: true
+download.feature.files: false
 testing.type: 'regression'
 use.access.token: true
 upload.test.results: true

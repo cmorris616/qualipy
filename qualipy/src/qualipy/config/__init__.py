@@ -20,7 +20,7 @@ def load_config(config_file_name, cl_args={}):
             if yaml_config is None:
                 yaml_config = {}
 
-    if hasattr(cl_args,'features_dir'):
+    if hasattr(cl_args,'features_dir') and cl_args.features_dir is not None:
         features_directory = cl_args.features_dir
     elif 'features.directory' in yaml_config:
         features_directory = yaml_config['features.directory']
