@@ -76,16 +76,19 @@ if config.download_feature_files:
     proj_mgmt_plugin.export_feature_files()
 
 if config.use_local_feature_files:
-    logging.info('Copying feature files')
-    feature_files = os.listdir(config.features_directory)
-    for file in feature_files:
-        if not file.endswith('.feature'):
-            continue
+    if not os.path.exists(config.features_directory):
+        logging.info(f"Features directory does not exist - '{config.features_directory}'")
+    else:
+        logging.info('Copying feature files')
+        feature_files = os.listdir(config.features_directory)
+        for file in feature_files:
+            if not file.endswith('.feature'):
+                continue
 
-        shutil.copyfile(
-            os.path.join(config.features_directory, file),
-            os.path.join(config.runtime_features_directory, file)
-            )
+            shutil.copyfile(
+                os.path.join(config.features_directory, file),
+                os.path.join(config.runtime_features_directory, file)
+                )
 
 # Execute tests
 test_plugin_classes = {
