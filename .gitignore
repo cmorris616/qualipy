@@ -2,6 +2,7 @@
 notes
 qualipy-env/
 qualipy/dist/
+docs/build/
 __pycache__/
 qualipy.egg-info/
 run.sh
