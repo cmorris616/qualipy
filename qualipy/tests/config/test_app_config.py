@@ -146,14 +146,15 @@ class TestAppConfig(TestCase):
                           features_directory=features_directory,
                           output_directory=output_directory)
         
-        self.assertEqual(config.proj_mgmt_authenticator, 'keyring')
+        self.assertEqual(config.proj_mgmt_authenticator_class, 
+                         'qualipy.authentication.keyring_authenticator.KeyringAuthenticator')
 
-        config_dict['project.management.authenticator'] = authenticator
+        config_dict['project.management.authenticator.class'] = authenticator
         config = AppConfig(config_dict,
                           features_directory=features_directory,
                           output_directory=output_directory)
         
-        self.assertEqual(config.proj_mgmt_authenticator, authenticator)
+        self.assertEqual(config.proj_mgmt_authenticator_class, authenticator)
         
     def test_proj_mgmt_class(self):
         config_dict = {}
@@ -166,7 +167,7 @@ class TestAppConfig(TestCase):
                           features_directory=features_directory,
                           output_directory=output_directory)
         
-        self.assertEqual(config.proj_mgmt_class, 'jira')
+        self.assertEqual(config.proj_mgmt_class, 'project.management')
 
         config_dict['project.management'] = proj_mgmt_class
         config = AppConfig(config_dict,
@@ -174,6 +175,27 @@ class TestAppConfig(TestCase):
                           output_directory=output_directory)
         
         self.assertEqual(config.proj_mgmt_class, proj_mgmt_class)
+        
+    def test_proj_mgmt_plugin_class(self):
+        config_dict = {}
+
+        features_directory = '/path/to/features'
+        output_directory = '/path/to/output'
+        proj_mgmt_plugin_class = 'test proj mgmt plugin class'
+
+        config = AppConfig(config_dict,
+                          features_directory=features_directory,
+                          output_directory=output_directory)
+        
+        self.assertEqual(config.proj_mgmt_plugin_class, 
+                         'qualipy.proj_mgmt_plugins.jira_proj_mgmt_plugin.JiraProjMgmtPlugin')
+
+        config_dict['project.management.plugin'] = proj_mgmt_plugin_class
+        config = AppConfig(config_dict,
+                          features_directory=features_directory,
+                          output_directory=output_directory)
+        
+        self.assertEqual(config.proj_mgmt_plugin_class, proj_mgmt_plugin_class)
         
     def test_test_class(self):
         config_dict = {}
@@ -186,14 +208,14 @@ class TestAppConfig(TestCase):
                           features_directory=features_directory,
                           output_directory=output_directory)
         
-        self.assertEqual(config.test_class, 'Behave')
+        self.assertEqual(config.test_plugin, 'qualipy.test_plugins.behave_plugin.BehavePlugin')
 
-        config_dict['test.class'] = test_class
+        config_dict['test.plugin'] = test_class
         config = AppConfig(config_dict,
                           features_directory=features_directory,
                           output_directory=output_directory)
         
-        self.assertEqual(config.test_class, test_class)
+        self.assertEqual(config.test_plugin, test_class)
         
     def test_use_local_feature_files(self):
         config_dict = {}

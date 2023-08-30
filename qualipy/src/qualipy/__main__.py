@@ -2,10 +2,9 @@ import argparse
 import logging
 import os
 import shutil
+import importlib
 
 from qualipy.config import get_config, load_config
-from qualipy.proj_mgmt_plugins.jira_proj_mgmt_plugin import JiraProjMgmtPlugin
-from qualipy.authentication.keyring_authenticator import KeyringAuthenticator
 from qualipy.test_plugins.behave_plugin import BehavePlugin
 
 OUTPUT_DIRECTORY = 'qualipy_output'
@@ -52,22 +51,23 @@ config.runtime_features_directory = os.path.join(OUTPUT_DIRECTORY, 'features')
 if os.path.exists(config.runtime_features_directory):
     shutil.rmtree(config.runtime_features_directory)
 
-proj_mgmt_authenticators = {
-    'keyring': KeyringAuthenticator
-}
-proj_mgmt_authenticator = proj_mgmt_authenticators[config.proj_mgmt_authenticator](
-    config=config.config_dict,
-    system=config.proj_mgmt_class
-    )
+pma_class = config.proj_mgmt_authenticator_class
+pma_module = pma_class[0:pma_class.rfind('.')]
+pma_class = pma_class[pma_class.rfind('.') + 1:]
 
-proj_mgmt_plugins = {
-    'jira': JiraProjMgmtPlugin
-}
-proj_mgmt_plugin = proj_mgmt_plugins[config.proj_mgmt_class](
-    config=config.config_dict,
-    authenticator=proj_mgmt_authenticator,
-    features_directory=config.runtime_features_directory
-    )
+module = importlib.import_module(pma_module)
+class_ = getattr(module, pma_class)
+proj_mgmt_authenticator = class_(config=config.config_dict, system=config.proj_mgmt_class)
+
+pm_class = config.proj_mgmt_plugin_class
+pm_module = pm_class[0:pm_class.rfind('.')]
+pm_class = pm_class[pm_class.rfind('.') + 1:]
+
+module = importlib.import_module(pm_module)
+class_ = getattr(module, pm_class)
+proj_mgmt_plugin = class_(config=config.config_dict,
+                          authenticator=proj_mgmt_authenticator, 
+                          features_directory=config.runtime_features_directory)
 
 os.makedirs(config.runtime_features_directory)
 
@@ -90,12 +90,16 @@ if config.use_local_feature_files:
                 os.path.join(config.runtime_features_directory, file)
                 )
 
-# Execute tests
-test_plugin_classes = {
-    'behave': BehavePlugin
-}
 
-test_plugin = test_plugin_classes[config.test_class.lower()](config)
+# Execute tests
+test_class = config.test_plugin
+test_module = test_class[0:test_class.rfind('.')]
+test_class = test_class[test_class.rfind('.') + 1:]
+
+module = importlib.import_module(test_module)
+class_ = getattr(module, test_class)
+
+test_plugin = class_(config)
 test_plugin.execute()
 
 # Upload results

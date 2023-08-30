@@ -8,3 +8,7 @@ testing.type: 'regression'
 use.access.token: true
 upload.test.results: true
 logging.level: 'info'
+project.management.authenticator.class: 'authentication.test_authentication_plugin.TestAuthenticationPlugin'
+project.management.plugin: 'project_management.test_pm_plugin.TestPmPlugin'
+project.management: 'jira'
+test.plugin: 'testing.sample_test_plugin.SampletestPlugin'
