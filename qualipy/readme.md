@@ -4,6 +4,7 @@ QualiPy is a framework for assisting with the automated testing process.  Qualip
 QualiPy features include:
 - Exporting feature files from JIRA for progression and regression testing
 - Uploading test results to JIRA
+- Support for custom project management, authentication, and testing plugins
 
 Coming Soon:
 - Moving user stories based on the outcome of the tests
@@ -12,7 +13,7 @@ Coming Soon:
 - Data management across steps and scenarios
 
 ## Test Plugins
-QualiPy is built to use multiple testing frameworks via plugins.  Currently, QualiPy only supports the behave framework for business-driven development.
+QualiPy is built to use multiple testing frameworks via plugins.  Currently, QualiPy supports the behave framework out of the box for business-driven development.
 
 ## Project Management Plugins
 Like the testing plugins, QualiPy can also use multiple project management software suites (such as JIRA) via plugins.
