@@ -1,14 +1,17 @@
 jira.regression.test.query: 'type=Test'
 jira.progression.test.query: 'type=Story and status="In Progress"'
 jira.url: 'http://localhost:8080'
-jira.project.key: 'TP'
+jira.project.key: 'TES'
 use.local.feature.files: true
 download.feature.files: false
-testing.type: 'regression'
-use.access.token: true
-upload.test.results: true
+testing.type: 'progression'
+use.access.token: false
+upload.test.results: false
+move.user.stories: true
+success.story.status: 'Done'
+failure.story.status: 'In Progress'
 logging.level: 'info'
-project.management.authenticator.class: 'authentication.test_authentication_plugin.TestAuthenticationPlugin'
-project.management.plugin: 'project_management.test_pm_plugin.TestPmPlugin'
+project.management.authenticator.class: 'qualipy.authentication.keyring_authenticator.KeyringAuthenticator'
+project.management.plugin: 'qualipy.proj_mgmt_plugins.jira_proj_mgmt_plugin.JiraProjMgmtPlugin'
 project.management: 'jira'
-test.plugin: 'testing.sample_test_plugin.SampletestPlugin'
+test.plugin: 'qualipy.test_plugins.behave_plugin.BehavePlugin'

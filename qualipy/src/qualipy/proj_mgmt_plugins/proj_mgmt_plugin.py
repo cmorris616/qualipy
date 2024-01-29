@@ -18,5 +18,9 @@ class ProjMgmtPlugin:
         raise NotImplementedError()
     
     @abc.abstractmethod
+    def move_user_stories(self):
+        raise NotImplementedError()
+    
+    @abc.abstractmethod
     def upload_test_results(self, test_results_file):
         raise NotImplementedError()

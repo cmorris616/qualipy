@@ -209,6 +209,15 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
                 self._project_key = issues[0][FIELDS_KEY][PROJECT_FIELD][ISSUE_KEY_FIELD]
 
         return issues
+    
+    def move_user_stories(self, test_results_file):
+        if not os.path.exists(test_results_file):
+            logging.error(f"'The test results file was not found - '{test_results_file}'")
+            return
+        # get transitions
+        # identify next status
+        # do transition
+        pass
 
     def upload_test_results(self, test_results_file):
 

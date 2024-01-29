@@ -102,8 +102,12 @@ class_ = getattr(module, test_class)
 test_plugin = class_(config)
 test_plugin.execute()
 
+# Move user stories
+if config.move_user_stories:
+    proj_mgmt_plugin.move_user_stories()
+
 # Upload results
-if config._upload_test_results:
+if config.upload_test_results:
     proj_mgmt_plugin.upload_test_results(test_plugin.test_results_file)
 
 if __name__ == '__main__':

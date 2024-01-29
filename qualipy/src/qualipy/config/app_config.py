@@ -3,6 +3,7 @@ class AppConfig:
         self._features_directory = config_dict['features.directory'] = kwargs['features_directory']
         self.output_directory = config_dict['output.directory'] = kwargs['output_directory']
         self._download_feature_files = config_dict.get('download.feature.files', False)
+        self._move_user_stories = config_dict.get('move.user.stories', False)
         self._log_file = config_dict.get('log.file', None)
         self._logging_level = config_dict.get('logging.level', 'info')
         self._proj_mgmt_authenticator_class = config_dict.get('project.management.authenticator.class', 
@@ -36,6 +37,10 @@ class AppConfig:
     @property
     def logging_level(self):
         return self._logging_level
+    
+    @property
+    def move_user_stories(self):
+        return self._move_user_stories
 
     @property
     def proj_mgmt_authenticator_class(self):
@@ -52,6 +57,10 @@ class AppConfig:
     @property
     def test_plugin(self):
         return self._test_plugin
+    
+    @property
+    def upload_test_results(self):
+        return self._upload_test_results
     
     @property
     def use_local_feature_files(self):
