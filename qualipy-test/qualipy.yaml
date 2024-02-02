@@ -9,7 +9,7 @@ use.access.token: false
 upload.test.results: false
 move.user.stories: true
 success.story.status: 'Done'
-failure.story.status: 'In Progress'
+failed.story.status: 'Selected For Development'
 logging.level: 'info'
 project.management.authenticator.class: 'qualipy.authentication.keyring_authenticator.KeyringAuthenticator'
 project.management.plugin: 'qualipy.proj_mgmt_plugins.jira_proj_mgmt_plugin.JiraProjMgmtPlugin'

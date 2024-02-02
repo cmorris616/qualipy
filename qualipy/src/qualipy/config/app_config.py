@@ -15,12 +15,18 @@ class AppConfig:
         self._use_local_feature_files = config_dict.get('use.local.feature.files', True)
         self.runtime_features_directory = self._features_directory
         self._upload_test_results = config_dict.get('upload.test.results', False)
+        self._success_story_status = config_dict.get('success.story.status', 'Done')
+        self._failed_story_status = config_dict.get('failed.story.status', 'In Progress')
 
         self._config_dict = config_dict.copy()
 
     @property
     def config_dict(self):
         return self._config_dict.copy()
+    
+    @property
+    def failed_story_status(self):
+        return self._failed_story_status
 
     @property
     def features_directory(self):
@@ -53,6 +59,10 @@ class AppConfig:
     @property
     def proj_mgmt_plugin_class(self):
         return self._proj_mgmt_plugin_class
+    
+    @property
+    def success_story_status(self):
+        return self._success_story_status
 
     @property
     def test_plugin(self):

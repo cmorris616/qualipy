@@ -4,9 +4,9 @@ QualiPy is a framework for assisting with the automated testing process.  Qualip
 QualiPy features include:
 - Exporting feature files from JIRA for progression and regression testing
 - Uploading test results to JIRA
+- Moving user stories based on test results
 
 Coming Soon:
-- Moving user stories based on the outcome of the tests
 - Loading test data to be used during the testing process
 - Cleaning up the test data after the testing has completed
 - Data management across steps and scenarios

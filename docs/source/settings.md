@@ -7,9 +7,15 @@ Settings will be read from qualipy.yaml by default, but can be overridden by usi
 - **download.feature.files**
     - Whether or not to download feature files from a project management suite.  Valid values are `true` and `false`.
     - Default value: `false`
+- **failed.story.status**
+    - The status to which a story should be moved when one or more of the attached tests fails
+    - Default value: `In Progress`
 - **logging.level**
     - The level of logging to be maintained during execution.  Valid values are `critical`, `debug`, `error`, `fatal`, `info`, and `warning`.
     - Default value: `info`
+- **move.user.stories**
+    - Indicates whether or not user stories should be moved after testing.  This only applies when progression testing
+    - Default value: `False`
 - **testing.type**
     - The type of testing taking place.  Valid values are `progression` and `regression`.  This determines how the project management plugin behaves when retrieving tests and uploading results.
     - Default value: `regression`
@@ -22,6 +28,9 @@ Settings will be read from qualipy.yaml by default, but can be overridden by usi
 - **project.management**
     - The system name used when reading credentials from the OS keyring
     - Default value: `project.management`
+- **success.story.status**
+    - The status to which a story should be moved when all the attached tests succeed
+    - Default value: `Done`
 - **test.plugin**
     - The fully qualified class name used for testing
     - Default value: `qualipy.test_plugins.behave_plugin.BehavePlugin`

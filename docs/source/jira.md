@@ -1,5 +1,5 @@
 # JIRA
-QualiPy can interact with JIRA to retrieve tests (if JIRA uses the Xray plugin) and upload the test results.
+QualiPy can interact with JIRA to retrieve tests (if JIRA uses the Xray plugin), upload the test results, and move user stories based on test results.
 
 ## Credentials
 The credentials are stored with a service name of **jira**.  For more information, see [Credentials](credentials.md)

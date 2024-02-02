@@ -104,7 +104,7 @@ test_plugin.execute()
 
 # Move user stories
 if config.move_user_stories:
-    proj_mgmt_plugin.move_user_stories()
+    proj_mgmt_plugin.move_user_stories(test_plugin.test_results_file)
 
 # Upload results
 if config.upload_test_results:

@@ -25,6 +25,7 @@ TYPE_KEY = 'type'
 
 # API Paths
 ISSUE_SEARCH_PATH = '/rest/api/2/search'
+ISSUE_PATH = '/rest/api/2/issue'
 PROJECT_SEARCH_PATH = '/rest/api/2/project'
 TEST_EXPORT_PATH = '/rest/raven/1.0/export/test'
 TEST_RESULTS_IMPORT_PATH = '/rest/raven/1.0/import/execution/behave/multipart'
@@ -211,13 +212,70 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
         return issues
     
     def move_user_stories(self, test_results_file):
-        if not os.path.exists(test_results_file):
-            logging.error(f"'The test results file was not found - '{test_results_file}'")
+        if self._testing_type != TESTING_TYPE_PROGRESSION:
+            logging.debug('Not moving user stories as testing type is not progression')
             return
-        # get transitions
-        # identify next status
+        
+        if not os.path.exists(test_results_file):
+            logging.error(f"The test results file was not found - '{test_results_file}'")
+            return
+        
+        test_results = []
+
+        with open(test_results_file, 'r') as results_file:
+            test_results = json.load(results_file)
+
+        if len(test_results) == 0 or 'elements' not in test_results[0].keys():
+            logging.info('No test results found')
+            return
+        
+        headers = self._get_request_headers()
+
+        from qualipy.config import get_config
+        app_config = get_config()
+
+        for test in test_results[0]['elements']:
+            if 'tags' not in test.keys():
+                continue
+
+            tags = test['tags']
+
+            if test['status'] == 'passed':
+                target_transition = app_config.success_story_status
+            else:
+                target_transition = app_config.failed_story_status
+
+            for tag in tags:
+                response = requests.get(
+                    url=f'{self._jira_url}{ISSUE_PATH}/{tag}/transitions',
+                    headers=headers
+                )
+
+                if response.status_code == 404:
+                    continue
+
+                transitions = json.loads(response.content.decode('utf-8'))['transitions']
+                transition_id = -1
+
+                for transition in transitions:
+                    if transition['name'].lower() == target_transition.lower():
+                        transition_id = transition['id']
+                        response = requests.post(
+                            url=f'{self._jira_url}/rest/api/2/issue/{tag}/transitions',
+                            json={'transition': {'id': transition_id}},
+                            headers=headers
+                        )
+
+                        if response.status_code != 204:
+                            logging.error(
+                                f'An error occurred while moving user story {tag}' \
+                                f'\nStatus Code: {response.status_code}' \
+                                f'\nResponse: {response.content.decode("utf-8")}'
+                            )
+                        break
+
+
         # do transition
-        pass
 
     def upload_test_results(self, test_results_file):
 

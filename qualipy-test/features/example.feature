@@ -6,3 +6,9 @@ Feature: Showing off behave
     Given we have behave installed
      When we implement 5 tests
      Then behave will test them for us!
+
+  @TES-2
+  Scenario: Run a simple test
+    Given we have behave installed
+     When we implement 5 tests
+     Then behave will test them for us!
