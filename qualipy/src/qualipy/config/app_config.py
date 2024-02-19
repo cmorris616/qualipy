@@ -18,11 +18,17 @@ class AppConfig:
         self._success_story_status = config_dict.get('success.story.status', 'Done')
         self._failed_story_status = config_dict.get('failed.story.status', 'In Progress')
 
+        self._data_management_cleanup = config_dict.get('data.management.cleanup', False)
+
         self._config_dict = config_dict.copy()
 
     @property
     def config_dict(self):
         return self._config_dict.copy()
+    
+    @property
+    def data_management_cleanup(self):
+        return self._data_management_cleanup
     
     @property
     def failed_story_status(self):

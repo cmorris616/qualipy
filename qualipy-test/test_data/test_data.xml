@@ -1,0 +1,24 @@
+<data>
+    <models.employee.Employee>
+        <id>4</id>
+        <first_name>Bob</first_name>
+        <last_name>Jones</last_name>
+        <active>true</active>
+        <start_date>2019-02-05</start_date>
+    </models.employee.Employee>
+    <models.employee.Employee>
+        <id>9</id>
+        <first_name>Alice</first_name>
+        <last_name>Baker</last_name>
+        <active>false</active>
+        <start_date>2020-12-05</start_date>
+    </models.employee.Employee>
+    <models.task.Task>
+        <id>3</id>
+        <description>Add more data loaders</description>
+        <due_date>2024-10-30</due_date>
+        <completion_datetime>2024-04-20 3:56:00am</completion_datetime>
+        <start_date>2024-01-15</start_date>
+        <start_time>1:20:00pm</start_time>
+    </models.task.Task>
+</data>

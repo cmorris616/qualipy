@@ -7,7 +7,7 @@ download.feature.files: false
 testing.type: 'progression'
 use.access.token: false
 upload.test.results: false
-move.user.stories: true
+move.user.stories: false
 success.story.status: 'Done'
 failed.story.status: 'Selected For Development'
 logging.level: 'info'

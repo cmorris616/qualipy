@@ -5,6 +5,7 @@ import shutil
 import importlib
 
 from qualipy.config import get_config, load_config
+from qualipy.data_management.data_manager import DataManager
 from qualipy.test_plugins.behave_plugin import BehavePlugin
 
 OUTPUT_DIRECTORY = 'qualipy_output'

@@ -1,4 +1,4 @@
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 import pytest
 import os
@@ -13,4 +13,6 @@ def unittest_config():
     os.remove(config_file_name)
 
     import shutil
-    shutil.rmtree('features')
+
+    if os.path.exists('features'):
+        shutil.rmtree('features')

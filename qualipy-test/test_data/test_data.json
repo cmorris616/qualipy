@@ -1,0 +1,28 @@
+{
+    "models.employee.Employee": [
+        {
+            "id": 4,
+            "first_name": "Bob",
+            "last_name": "Jones",
+            "active": true,
+            "start_date": "02/05/2019"
+        },
+        {
+            "id": 9,
+            "first_name": "Alice",
+            "last_name": "Baker",
+            "active": false,
+            "start_date": "12/05/2020"
+        }
+    ],
+    "models.task.Task": [
+        {
+            "id": 3,
+            "description": "Add more data loaders",
+            "due_date": "10/30/2024",
+            "completion_datetime": "04/20/2024 03:56",
+            "start_date": "01/15/2024",
+            "start_time": "13:20"
+        }
+    ]
+}

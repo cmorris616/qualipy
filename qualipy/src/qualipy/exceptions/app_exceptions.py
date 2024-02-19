@@ -24,3 +24,6 @@ class HttpException(Exception):
     
     def __str__(self):
         return self._message
+
+class InvalidFileExtensionException(Exception):
+    pass
