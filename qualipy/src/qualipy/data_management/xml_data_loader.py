@@ -1,3 +1,6 @@
+"""
+This module contains the class for loading test data from XML files.
+"""
 import datetime
 import importlib
 import xml.etree.ElementTree as ET
@@ -5,7 +8,23 @@ from qualipy.data_management.data_loader import DataLoader
 
 
 class XmlDataLoader(DataLoader):
+    """
+    This class loads test data from XML files.  The data types will be matched
+    based on the data type of the associated property in the model class.
+
+    The XML data loader can handle multiple model classes. The XML must have a
+    root node. The node can be anything (i.e. data). The tags immediately under
+    the root node should be the fully qualified model class names. Child elements
+    of the model class nodes will be the property names with values as desired.
+    The formats for date, time, and datetime are used when loading the data.
+    """
     def load_data(self, **kwargs):
+        """
+        Loads the data from the specified data source.
+
+        :param kwargs:
+            * data_source: the path to the XML file containing the test data.
+        """
         data_source = kwargs['data_source']
         tree = ET.parse(data_source)
         root = tree.getroot()

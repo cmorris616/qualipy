@@ -1,3 +1,7 @@
+"""
+This module contains the class that handles loading test data from
+Excel files.
+"""
 import datetime
 import importlib
 from openpyxl import load_workbook
@@ -5,7 +9,27 @@ from qualipy.data_management.data_loader import DataLoader
 
 
 class ExcelDataLoader(DataLoader):
+    """
+    This class handles loading data from Excel files.  The data must be contained
+    in a worksheet whose name is the fully qualified class name of the model class
+    that represents the data being loaded.  The Excel file can contain multiple
+    worksheets as long as the worksheets are named with the fully qualified model
+    class name.
+    """
     def load_data(self, **kwargs):
+        """
+        Loads the data from the Excel file.  The data type for the data being
+        read must be set in the Excel file.  For example, if a particular field
+        contains a datetime value, then the cell must be formatted as a datetime
+        field.  Values not formatted correctly may be read as a string.
+
+        In the event that a data type is not available in Excel, the associated
+        property for the model class will be checked in order to attempt to match
+        the data type.
+
+        :param kwargs:
+            * data_source: the path to the Excel file containing the test data
+        """
         data_source = kwargs['data_source']
 
         workbook = load_workbook(data_source)

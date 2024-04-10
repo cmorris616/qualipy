@@ -1,3 +1,6 @@
+"""
+This module contains the class for loading test data from JSON files.
+"""
 import datetime
 import importlib
 import json
@@ -5,33 +8,19 @@ from qualipy.data_management.data_loader import DataLoader
 
 
 class JsonDataLoader(DataLoader):
+    """
+    This class loads test data from JSON files.
+    """
     def load_data(self, **kwargs):
         """
         Loads test data from a JSON file.  The JSON file should contain records
         keyed by the fully qualified model class with the value being a list of
-        records of that model class.  For example:
+        records of that model class.
 
-        {
-            "models.model1.Model1": [
-                {
-                    "prop1": "value1",
-                    "prop2": "value2"
-                },
-                {
-                    "prop1": "value3",
-                    "prop2": "value4"
-                }
-            ],
-            "models.another_model.AnotherModel: [
-                {
-                    "prop3": "value5",
-                    "prop4": "value6"
-                }
-            ]
-        }
-
-        kwargs values:
+        :param kwargs:
             - data_source: the path to the file containing the data
+
+        :returns: a list of loaded records
         """
         data_source = kwargs['data_source']
         result = []

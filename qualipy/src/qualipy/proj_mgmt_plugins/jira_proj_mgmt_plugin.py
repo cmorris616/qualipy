@@ -1,3 +1,6 @@
+"""
+This module contains the project management plugin for JIRA.
+"""
 import json
 import logging
 import os
@@ -5,7 +8,7 @@ import tempfile
 from zipfile import ZipFile
 import requests
 import base64
-from qualipy.exceptions.app_exceptions import HttpException, InvalidTestingTypeError, MissingUrlError
+from qualipy.exceptions import HttpException, InvalidTestingTypeError, MissingUrlError
 from .proj_mgmt_plugin import TESTING_TYPE_PROGRESSION, TESTING_TYPE_REGRESSION, ProjMgmtPlugin
 
 # JSON keys/field names
@@ -32,8 +35,25 @@ TEST_RESULTS_IMPORT_PATH = '/rest/raven/1.0/import/execution/behave/multipart'
 
 
 class JiraProjMgmtPlugin(ProjMgmtPlugin):
+    """
+    The plugin for interacting with JIRA for testing purposes.
+    """
 
     def __init__(self, **kwargs):
+        """
+        Initializes this plugin based on the provided kwargs.
+
+        :param kwargs: Keyword arguments for initialization
+            * authenticator: The authenticator to be used when interacting with
+                             the project management system.
+
+            * config: The application configuration dict.  This provides the
+                      project management plugin with the ability to use custom
+                      configuration settings.
+            
+            * features_directory: the directory to which the feature files should
+                                  be downloaded.
+        """
         super().__init__(**kwargs)
         self._regression_test_query = self._config.get(
             'jira.regression.test.query', 'type=Test')
@@ -63,6 +83,9 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
             raise InvalidTestingTypeError(self._testing_type)
 
     def _export_progression_tests(self):
+        """
+        Exports the progression tests based on the progression test query.
+        """
         logging.info('Exporting progression tests from JIRA')
         logging.info('Querying for user stories')
         stories = self._query_issues(self._progression_test_query)
@@ -108,6 +131,9 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
                 zip_file.extractall(path=self._features_directory)
 
     def _export_regression_tests(self):
+        """
+        Exports the regression tests based on the regression test query.
+        """
         logging.info('Exporting regression tests from JIRA')
         issues = self._query_issues(self._regression_test_query)
 
@@ -134,6 +160,9 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
                 zip_file.extractall(path=self._features_directory)
 
     def _get_jira_project(self):
+        """
+        Queries JIRA for the project information.
+        """
         if self._jira_project is not None:
             return self._jira_project
 
@@ -159,6 +188,9 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
         return self._jira_project
 
     def _get_request_headers(self):
+        """
+        Returns the headers for requests to JIRA.
+        """
         if self._use_access_token:
             logging.debug('Using access token to connect to JIRA')
             auth_header_value = f'Bearer {self._authenticator.get_api_key()}'
@@ -174,6 +206,11 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
         }
 
     def _query_issues(self, jql):
+        """
+        Queries JIRA using the provided JQL query.
+
+        :param jql:  The JIRA Query Language (JQL) query to be used for querying issues.
+        """
         # Get credentials and set the authorization header
         headers = self._get_request_headers()
 

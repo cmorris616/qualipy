@@ -1,3 +1,19 @@
+"""
+This module manages the data loading process.  Creating a custom data
+manager is not required even when using a custom data loader.  When
+possible, the data manager will attempt to select the correct data
+loader based on the file extension of the file containing the test
+data.
+
+This data manager maintains its state to allow for running in parallel.
+For example, if this data manager has already loaded the test data,
+it will not load it again.  Also, if the data loading is in progress,
+it will not restart the data loading.
+
+After data loading is complete, properties can be set based on the
+data in order to have the data be available to future tests.
+"""
+
 from os import path
 from time import sleep
 
@@ -5,21 +21,25 @@ from qualipy.data_management.csv_data_loader import CsvDataLoader
 from qualipy.data_management.excel_data_loader import ExcelDataLoader
 from qualipy.data_management.json_data_loader import JsonDataLoader
 from qualipy.data_management.xml_data_loader import XmlDataLoader
-from qualipy.exceptions.app_exceptions import InvalidFileExtensionException
+from qualipy.exceptions import InvalidFileExtensionException
 from qualipy.data_management.yaml_data_loader import YamlDataLoader
 from qualipy.exceptions import DataManagerNotFoundException
 from qualipy.data_management.data_loader import DataLoader
 
 
 class DataManager:
-
-    _DATE_FORMAT_KEY = 'date_format'
-    _DATETIME_FORMAT_KEY = 'datetime_format'
-    _TIME_FORMAT_KEY = 'time_format'
+    """
+    Manages the data loading process and keeps track of the registered
+    data managers for later use.
+    """
 
     _data_managers = {}
 
     def __init__(self):
+        """
+        Initializes this data manager state, formats, properties and records
+        as well as the data loader-to-file extension associations.
+        """
         self._data_load_started = False
         self._data_load_complete = False
         self.date_format = '%Y-%m-%d'
@@ -39,22 +59,38 @@ class DataManager:
 
     @property
     def data_load_started(self):
+        """
+        Indicates whether or not the data load has started.
+        """
         return self._data_load_started
     
     @property
     def data_load_complete(self):
+        """
+        Indicates whether or not the data loading is complete.
+        """
         return self._data_load_complete
     
     def set_property(self, property_name: str, property_value):
+        """
+        Sets the specified property to the specified value.
+        """
         self._properties[property_name] = property_value
 
     def get_property(self, property_name):
+        """
+        Returns the value of the property with the specified name (or
+        None if the property cannot be found).
+        """
         if property_name not in self._properties.keys():
             return None
         
         return self._properties[property_name]
     
     def remove_property(self, property_name):
+        """
+        Removes the property with the specified name.
+        """
         if property_name not in self._properties.keys():
             return
         
@@ -95,7 +131,7 @@ class DataManager:
             
             data_loader = self.get_data_loader(file_extension=file_ext)
 
-            self.set_formats(data_loader)
+            self._set_formats(data_loader)
             
             results = data_loader.load_data(**kwargs)
             self._data_load_complete = True
@@ -108,12 +144,18 @@ class DataManager:
 
         return self._records
     
-    def set_formats(self, data_loader: DataLoader):
+    def _set_formats(self, data_loader: DataLoader):
+        """
+        Sets the date, time, and date time formats for the data loader.
+        """
         data_loader.date_format = self.date_format
         data_loader.time_format = self.time_format
         data_loader.datetime_format = self.datetime_format
     
     def get_data_loader(self, file_extension):
+        """
+        Returns the data loader based on the file extension provided.
+        """
         file_extension = file_extension.lower()
 
         if file_extension not in self._data_loaders.keys():
@@ -122,10 +164,19 @@ class DataManager:
         return self._data_loaders[file_extension]()
     
     def register_data_loader(self, file_extension, data_loader):
+        """
+        Registers the provided data loader and associates it with the
+        provided file extension.  If the file extension is already
+        associated with a data loader, that data loader is replaced
+        in the association.
+        """
         self._data_loaders[file_extension] = data_loader
     
     @classmethod
     def get_data_manager(cls, data_manager_name):
+        """
+        Returns the data manager with the specified name.
+        """
         if data_manager_name not in cls._data_managers.keys():
             raise DataManagerNotFoundException(
                 f'The data manager {data_manager_name} has not been registered.')
@@ -133,4 +184,7 @@ class DataManager:
     
     @classmethod
     def register_data_manager(cls, name, data_manager):
+        """
+        Registers the provided data manager with the specified name.
+        """
         cls._data_managers[name] = data_manager

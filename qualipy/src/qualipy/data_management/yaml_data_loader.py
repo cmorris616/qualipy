@@ -1,3 +1,6 @@
+"""
+This module contains the class for loading test data from YAML files.
+"""
 import datetime
 import importlib
 import time
@@ -6,20 +9,17 @@ from qualipy.data_management.data_loader import DataLoader
 
 
 class YamlDataLoader(DataLoader):
+    """
+    This class loads test data from YAML files.  The YAML data loader can
+    handle multiple model classes. The top most keys are the fully qualified
+    model class names. The subkeys are the properies. YAML can handle most
+    data types. The only data type that may cause an issue is time. The time
+    can be stored as a string and the time format property of the data manager
+    can be used to read it.
+    """
     def load_data(self, **kwargs):
         """
-        Loads test data from a JSON file.  The JSON file should contain records
-        keyed by the fully qualified model class with the value being a list of
-        records of that model class.  For example:
-
-        models.model1.Model1:
-            - prop1: value1
-              prop2: value2
-            - prop1: value3
-              prop2: value4
-        models.another_model.AnotherModel:
-            - prop3: value5
-              prop4: value6
+        Loads test data from a YAML file.
 
         kwargs values:
             - data_source: the path to the file containing the data

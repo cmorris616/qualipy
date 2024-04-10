@@ -1,5 +1,5 @@
 from qualipy.data_management.data_manager import DataManager
-from data_management.custom_data_loader import CustomDataLoader
+from qualipy.data_management.custom_data_loader import CustomDataLoader
 
 
 def before_all(context):
@@ -28,5 +28,5 @@ def before_all(context):
     DataManager.register_data_manager(name='Excel', data_manager=excelDataManager)
 
     customDataManager = DataManager()
-    customDataManager.register_data_loader('hardcoded', data_loader=CustomDataLoader)
+    customDataManager.register_data_loader(file_extension='hardcoded', data_loader=CustomDataLoader)
     DataManager.register_data_manager(name='Custom', data_manager=customDataManager)

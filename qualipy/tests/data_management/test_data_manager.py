@@ -6,7 +6,7 @@ from qualipy.data_management.data_loader import DataLoader
 
 from qualipy.data_management.data_manager import DataManager
 from qualipy.exceptions import DataManagerNotFoundException
-from qualipy.exceptions.app_exceptions import InvalidFileExtensionException
+from qualipy.exceptions import InvalidFileExtensionException
 
 
 
