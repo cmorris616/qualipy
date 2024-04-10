@@ -15,7 +15,10 @@ Welcome to |projectName|!
    settings
    credentials
    jira
+   datamanagement
    development/plugindevelopment
+   development/docgen
+   apidocs/modules.rst
 
 
 

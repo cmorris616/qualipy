@@ -1,0 +1,18 @@
+models.employee.Employee:
+  - id: 4
+    first_name: Bob
+    last_name: Jones
+    active: true
+    start_date: 2019-02-05
+  - id: 9
+    first_name: Alice
+    last_name: Baker
+    active: false
+    start_date: 2020-12-05
+models.task.Task:
+  - id: 3
+    description: Add more data loaders
+    due_date: 2024-10-30
+    completion_datetime: 2024-04-20 03:56:00
+    start_date: 2024-01-15
+    start_time: '1:20:00pm'

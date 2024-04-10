@@ -5,6 +5,7 @@ import shutil
 import importlib
 
 from qualipy.config import get_config, load_config
+from qualipy.data_management.data_manager import DataManager
 from qualipy.test_plugins.behave_plugin import BehavePlugin
 
 OUTPUT_DIRECTORY = 'qualipy_output'
@@ -102,8 +103,12 @@ class_ = getattr(module, test_class)
 test_plugin = class_(config)
 test_plugin.execute()
 
+# Move user stories
+if config.move_user_stories:
+    proj_mgmt_plugin.move_user_stories(test_plugin.test_results_file)
+
 # Upload results
-if config._upload_test_results:
+if config.upload_test_results:
     proj_mgmt_plugin.upload_test_results(test_plugin.test_results_file)
 
 if __name__ == '__main__':

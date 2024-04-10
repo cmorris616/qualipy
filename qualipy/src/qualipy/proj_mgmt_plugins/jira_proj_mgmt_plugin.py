@@ -1,3 +1,6 @@
+"""
+This module contains the project management plugin for JIRA.
+"""
 import json
 import logging
 import os
@@ -5,7 +8,7 @@ import tempfile
 from zipfile import ZipFile
 import requests
 import base64
-from qualipy.exceptions.app_exceptions import HttpException, InvalidTestingTypeError, MissingUrlError
+from qualipy.exceptions import HttpException, InvalidTestingTypeError, MissingUrlError
 from .proj_mgmt_plugin import TESTING_TYPE_PROGRESSION, TESTING_TYPE_REGRESSION, ProjMgmtPlugin
 
 # JSON keys/field names
@@ -25,14 +28,32 @@ TYPE_KEY = 'type'
 
 # API Paths
 ISSUE_SEARCH_PATH = '/rest/api/2/search'
+ISSUE_PATH = '/rest/api/2/issue'
 PROJECT_SEARCH_PATH = '/rest/api/2/project'
 TEST_EXPORT_PATH = '/rest/raven/1.0/export/test'
 TEST_RESULTS_IMPORT_PATH = '/rest/raven/1.0/import/execution/behave/multipart'
 
 
 class JiraProjMgmtPlugin(ProjMgmtPlugin):
+    """
+    The plugin for interacting with JIRA for testing purposes.
+    """
 
     def __init__(self, **kwargs):
+        """
+        Initializes this plugin based on the provided kwargs.
+
+        :param kwargs: Keyword arguments for initialization
+            * authenticator: The authenticator to be used when interacting with
+                             the project management system.
+
+            * config: The application configuration dict.  This provides the
+                      project management plugin with the ability to use custom
+                      configuration settings.
+            
+            * features_directory: the directory to which the feature files should
+                                  be downloaded.
+        """
         super().__init__(**kwargs)
         self._regression_test_query = self._config.get(
             'jira.regression.test.query', 'type=Test')
@@ -62,6 +83,9 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
             raise InvalidTestingTypeError(self._testing_type)
 
     def _export_progression_tests(self):
+        """
+        Exports the progression tests based on the progression test query.
+        """
         logging.info('Exporting progression tests from JIRA')
         logging.info('Querying for user stories')
         stories = self._query_issues(self._progression_test_query)
@@ -107,6 +131,9 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
                 zip_file.extractall(path=self._features_directory)
 
     def _export_regression_tests(self):
+        """
+        Exports the regression tests based on the regression test query.
+        """
         logging.info('Exporting regression tests from JIRA')
         issues = self._query_issues(self._regression_test_query)
 
@@ -133,6 +160,9 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
                 zip_file.extractall(path=self._features_directory)
 
     def _get_jira_project(self):
+        """
+        Queries JIRA for the project information.
+        """
         if self._jira_project is not None:
             return self._jira_project
 
@@ -158,6 +188,9 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
         return self._jira_project
 
     def _get_request_headers(self):
+        """
+        Returns the headers for requests to JIRA.
+        """
         if self._use_access_token:
             logging.debug('Using access token to connect to JIRA')
             auth_header_value = f'Bearer {self._authenticator.get_api_key()}'
@@ -173,6 +206,11 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
         }
 
     def _query_issues(self, jql):
+        """
+        Queries JIRA using the provided JQL query.
+
+        :param jql:  The JIRA Query Language (JQL) query to be used for querying issues.
+        """
         # Get credentials and set the authorization header
         headers = self._get_request_headers()
 
@@ -209,6 +247,72 @@ class JiraProjMgmtPlugin(ProjMgmtPlugin):
                 self._project_key = issues[0][FIELDS_KEY][PROJECT_FIELD][ISSUE_KEY_FIELD]
 
         return issues
+    
+    def move_user_stories(self, test_results_file):
+        if self._testing_type != TESTING_TYPE_PROGRESSION:
+            logging.debug('Not moving user stories as testing type is not progression')
+            return
+        
+        if not os.path.exists(test_results_file):
+            logging.error(f"The test results file was not found - '{test_results_file}'")
+            return
+        
+        test_results = []
+
+        with open(test_results_file, 'r') as results_file:
+            test_results = json.load(results_file)
+
+        if len(test_results) == 0 or 'elements' not in test_results[0].keys():
+            logging.info('No test results found')
+            return
+        
+        headers = self._get_request_headers()
+
+        from qualipy.config import get_config
+        app_config = get_config()
+
+        for test in test_results[0]['elements']:
+            if 'tags' not in test.keys():
+                continue
+
+            tags = test['tags']
+
+            if test['status'] == 'passed':
+                target_transition = app_config.success_story_status
+            else:
+                target_transition = app_config.failed_story_status
+
+            for tag in tags:
+                response = requests.get(
+                    url=f'{self._jira_url}{ISSUE_PATH}/{tag}/transitions',
+                    headers=headers
+                )
+
+                if response.status_code == 404:
+                    continue
+
+                transitions = json.loads(response.content.decode('utf-8'))['transitions']
+                transition_id = -1
+
+                for transition in transitions:
+                    if transition['name'].lower() == target_transition.lower():
+                        transition_id = transition['id']
+                        response = requests.post(
+                            url=f'{self._jira_url}/rest/api/2/issue/{tag}/transitions',
+                            json={'transition': {'id': transition_id}},
+                            headers=headers
+                        )
+
+                        if response.status_code != 204:
+                            logging.error(
+                                f'An error occurred while moving user story {tag}' \
+                                f'\nStatus Code: {response.status_code}' \
+                                f'\nResponse: {response.content.decode("utf-8")}'
+                            )
+                        break
+
+
+        # do transition
 
     def upload_test_results(self, test_results_file):
 

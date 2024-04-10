@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
-from qualipy.exceptions.app_exceptions import InvalidTestingTypeError, MissingUrlError, HttpException
+from qualipy.exceptions import InvalidTestingTypeError, MissingUrlError, HttpException
 
 class TestInvalidTestingTypeError(TestCase):
     def test_message(self):

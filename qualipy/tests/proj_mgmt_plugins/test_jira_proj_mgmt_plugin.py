@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock, mock_open, patch
 
 from pytest import MonkeyPatch
-from qualipy.exceptions.app_exceptions import HttpException, InvalidTestingTypeError, MissingUrlError
+from qualipy.exceptions import HttpException, InvalidTestingTypeError, MissingUrlError
 
 from qualipy.proj_mgmt_plugins.jira_proj_mgmt_plugin import JiraProjMgmtPlugin
 

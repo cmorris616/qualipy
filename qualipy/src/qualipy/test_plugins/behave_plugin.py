@@ -1,9 +1,16 @@
+"""
+This module contains the class for the test plugin to be used with
+the Behave framework.
+"""
 import os
 from .test_plugin import TestPlugin
 from qualipy.config.app_config import AppConfig
 
 
 class BehavePlugin(TestPlugin):
+    """
+    Executes the tests using the Behave framework.
+    """
     def __init__(self, config: AppConfig):
         super().__init__(config)
         self._output_file = os.path.join(self._config.output_directory, 'behave_report.json')
