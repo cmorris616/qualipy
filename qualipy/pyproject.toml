@@ -27,6 +27,7 @@ dependencies = [
 [project.urls]
 "Homepage" = "https://github.com/cmorris616/qualipy"
 "Bug Tracker" = "https://github.com/cmorris616/qualipy/issues"
+"Documentation" = "https://cmorris-qualipy.readthedocs.io/en/latest/index.html"
 
 # [tool.setuptools.packages.find]
 # exclude = ["docs*", "tests*"]

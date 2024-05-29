@@ -6,7 +6,6 @@ QualiPy features include:
 - Uploading test results to JIRA
 - Support for custom project management, authentication, and testing plugins
 - Moving user stories based on the outcome of the tests
-- Moving user stories based on test results]
 - Loading test data to be used during the testing process
 - Data management across steps and scenarios
 
