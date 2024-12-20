@@ -1,5 +1,5 @@
 from qualipy.data_management.data_manager import DataManager
-from qualipy.data_management.custom_data_loader import CustomDataLoader
+from data_management.custom_data_loader import CustomDataLoader
 
 
 def before_all(context):

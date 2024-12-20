@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qualipy"
-version = "1.1.1"
+version = "1.1.2"
 authors = [
   { name="Charles Morris", email="cmorris616@gmail.com" },
 ]
@@ -21,13 +21,14 @@ dependencies = [
   "behave",
   "keyring",
   "requests",
-  "PyYAML"
+  "PyYAML",
+  "openpyxl"
 ]
 
 [project.urls]
 "Homepage" = "https://github.com/cmorris616/qualipy"
 "Bug Tracker" = "https://github.com/cmorris616/qualipy/issues"
-"Documentation" = "https://cmorris-qualipy.readthedocs.io/en/latest/index.html"
+"Documentation" = "https://cmorris-qualipy.readthedocs.io/en/stable"
 
 # [tool.setuptools.packages.find]
 # exclude = ["docs*", "tests*"]
